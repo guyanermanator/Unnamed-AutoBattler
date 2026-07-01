@@ -94,6 +94,7 @@ export interface ProjectileTrail {
 }
 
 const MAX_LOG_ENTRIES = 24;
+const LOW_HEALTH_THRESHOLD = 0.3;
 
 export class CombatPresentation {
   private allies: Unit[] = [];
@@ -112,6 +113,7 @@ export class CombatPresentation {
   private battleOutcome: boolean | null = null;
   private logCollapsed = true;
   private nextId = 0;
+  private elapsedTime = 0;
 
   bind(allies: Unit[], enemies: Unit[]): void {
     this.destroy();
@@ -128,6 +130,7 @@ export class CombatPresentation {
     this.shakeMagnitude = 0;
     this.shakeOffset = Vector2.zero;
     this.overlayFlash = 0;
+    this.elapsedTime = 0;
 
     [...allies, ...enemies].forEach(unit => {
       this.animations.set(unit.id, new AnimationController());
@@ -208,6 +211,7 @@ export class CombatPresentation {
   }
 
   update(dt: number): void {
+    this.elapsedTime += dt;
     this.animations.forEach(controller => controller.update(dt));
 
     this.decayMap(this.highlights, dt);
@@ -227,8 +231,8 @@ export class CombatPresentation {
       this.shakeTimer -= dt;
       const intensity = Math.max(0, this.shakeTimer) * this.shakeMagnitude * 5;
       this.shakeOffset = new Vector2(
-        Math.sin(Date.now() * 0.05) * intensity,
-        Math.cos(Date.now() * 0.04) * intensity
+        Math.sin(this.elapsedTime * 45) * intensity,
+        Math.cos(this.elapsedTime * 36) * intensity
       );
     } else {
       this.shakeOffset = Vector2.zero;
@@ -305,7 +309,7 @@ export class CombatPresentation {
 
   private createUnitState(unit: Unit): PresentationUnitState {
     const controller = this.animations.get(unit.id) ?? new AnimationController();
-    const lowHealth = unit.stats.health / Math.max(1, unit.stats.maxHealth) <= 0.3;
+    const lowHealth = unit.stats.health / Math.max(1, unit.stats.maxHealth) <= LOW_HEALTH_THRESHOLD;
     const animation = controller.getState(unit.stats.isAlive(), lowHealth, this.battleOutcome);
     const time = controller.getTime();
     const bobStrength = animation === 'attack' ? 1.5 : animation === 'cast' ? 2.5 : 1;

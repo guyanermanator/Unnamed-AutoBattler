@@ -18,6 +18,10 @@ interface Rect {
   height: number;
 }
 
+const PARTY_CARD_BORDER = 2;
+const PARTY_CARD_INNER_BORDER = 4;
+const MAX_VISIBLE_LOG_ENTRIES = 7;
+
 /**
  * First-person combat presentation scene
  */
@@ -284,8 +288,20 @@ export class CombatScene extends Scene {
     const portraitY = rect.y + 6;
     const portrait = this.getPortraitArt(state.unit);
 
-    renderer.drawRect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4, this.getRarityColor(state.unit.data.rarity));
-    renderer.drawRect(rect.x + 4, rect.y + 4, rect.width - 8, rect.height - 8, '#c0c0c0');
+    renderer.drawRect(
+      rect.x + PARTY_CARD_BORDER,
+      rect.y + PARTY_CARD_BORDER,
+      rect.width - PARTY_CARD_BORDER * 2,
+      rect.height - PARTY_CARD_BORDER * 2,
+      this.getRarityColor(state.unit.data.rarity)
+    );
+    renderer.drawRect(
+      rect.x + PARTY_CARD_INNER_BORDER,
+      rect.y + PARTY_CARD_INNER_BORDER,
+      rect.width - PARTY_CARD_INNER_BORDER * 2,
+      rect.height - PARTY_CARD_INNER_BORDER * 2,
+      '#c0c0c0'
+    );
     renderer.drawImage(portrait, portraitX, portraitY, portraitSize, portraitSize);
 
     if (state.flash > 0) {
@@ -357,7 +373,7 @@ export class CombatScene extends Scene {
       return;
     }
 
-    this.presentation.getCombatLog().slice(0, 7).forEach((entry, index) => {
+    this.presentation.getCombatLog().slice(0, MAX_VISIBLE_LOG_ENTRIES).forEach((entry, index) => {
       const color =
         entry.emphasis === 'crit' ? '#8b0000' :
         entry.emphasis === 'system' ? '#000080' :
@@ -511,7 +527,7 @@ export class CombatScene extends Scene {
     canvas.height = 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      throw new Error('Failed to create portrait canvas');
+      throw new Error('Failed to create portrait placeholder canvas. Canvas 2D rendering may be unavailable in this browser environment.');
     }
 
     ctx.fillStyle = this.getRarityColor(unit.data.rarity);
@@ -543,7 +559,7 @@ export class CombatScene extends Scene {
     canvas.height = 72;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      throw new Error('Failed to create enemy canvas');
+      throw new Error('Failed to create enemy placeholder canvas. Canvas 2D rendering may be unavailable in this browser environment.');
     }
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 72);

@@ -15,6 +15,8 @@ import { Vector2 } from './engine/math/Vector2';
 
 const VIRTUAL_WIDTH = 480;
 const VIRTUAL_HEIGHT = 270;
+const DEMO_ALLY_UNIT_IDS = ['unit_knight', 'unit_archer', 'unit_mage', 'unit_knight'];
+const DEMO_ENEMY_UNIT_IDS = ['unit_knight', 'unit_archer', 'unit_mage', 'unit_archer', 'unit_knight'];
 
 /**
  * Main game class
@@ -154,11 +156,9 @@ export class Game {
   }
 
   private async startDemoCombat(): Promise<void> {
-    const allyIds = ['unit_knight', 'unit_archer', 'unit_mage', 'unit_knight'];
-    const enemyIds = ['unit_knight', 'unit_archer', 'unit_mage', 'unit_archer', 'unit_knight'];
     const [allies, enemies] = await Promise.all([
-      this.createUnits(allyIds, 'ally'),
-      this.createUnits(enemyIds, 'enemy'),
+      this.createUnits(DEMO_ALLY_UNIT_IDS, 'ally'),
+      this.createUnits(DEMO_ENEMY_UNIT_IDS, 'enemy'),
     ]);
 
     this.combatScene.startCombat(allies, enemies, this.rng.getSeed());

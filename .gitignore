@@ -35,8 +35,6 @@ logs/
 # Testing
 coverage/
 
-# Prisma
-server/prisma/migrations/
 
 # Temporary files
 *.tmp

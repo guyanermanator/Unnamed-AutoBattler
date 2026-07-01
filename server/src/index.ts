@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
+import { createHash } from 'crypto';
 import { connectDatabase } from './database/prisma';
 import { registerRateLimit } from './api/middleware/rateLimit';
 import { authRoutes } from './api/routes/auth';
@@ -12,14 +13,28 @@ import { leaderboardRoutes } from './api/routes/leaderboard';
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = process.env.HOST || '0.0.0.0';
-const JWT_SECRET = process.env.JWT_SECRET;
 
-if (!JWT_SECRET && process.env.NODE_ENV === 'production') {
-  console.error('FATAL: JWT_SECRET environment variable is required in production');
-  process.exit(1);
+function resolveJwtSecret(): string {
+  if (process.env.JWT_SECRET) {
+    return process.env.JWT_SECRET;
+  }
+  if (process.env.NODE_ENV === 'production') {
+    if (process.env.DATABASE_URL) {
+      // Derive a consistent secret from DATABASE_URL (always set by Render).
+      // Set JWT_SECRET explicitly in Render env vars for the best security.
+      console.warn(
+        'WARNING: JWT_SECRET not set. Deriving secret from DATABASE_URL. ' +
+          'Set JWT_SECRET in your Render environment variables for better security.',
+      );
+      return createHash('sha256').update(process.env.DATABASE_URL + ':jwt-secret-v1').digest('hex');
+    }
+    console.error('FATAL: Neither JWT_SECRET nor DATABASE_URL is set in production');
+    process.exit(1);
+  }
+  return 'dev-secret-change-before-production';
 }
 
-const jwtSecret = JWT_SECRET || 'dev-secret-change-before-production';
+const jwtSecret = resolveJwtSecret();
 
 async function start() {
   const fastify = Fastify({

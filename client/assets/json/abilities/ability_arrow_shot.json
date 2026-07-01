@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "id": "ability_arrow_shot",
+  "name": "Power Shot",
+  "description": "Fire a powerful arrow that deals bonus damage",
+  "type": "active",
+  "targetType": "enemy",
+  "manaCost": 30,
+  "cooldown": 6,
+  "range": 8,
+  "damage": {
+    "base": 120,
+    "scaling": 1.5,
+    "type": "physical"
+  },
+  "projectile": {
+    "speed": 400,
+    "sprite": "arrow.png"
+  },
+  "icon": "icon_arrow_shot.png"
+}

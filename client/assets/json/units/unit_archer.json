@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "id": "unit_archer",
+  "name": "Archer",
+  "rarity": "common",
+  "cost": 1,
+  "class": "Ranger",
+  "faction": "Human",
+  "traits": ["precision"],
+  "stats": {
+    "health": 500,
+    "maxHealth": 500,
+    "mana": 0,
+    "maxMana": 100,
+    "manaRegen": 0,
+    "attackDamage": 50,
+    "magicDamage": 0,
+    "armor": 15,
+    "magicResist": 15,
+    "attackSpeed": 1.2,
+    "attackRange": 6,
+    "critChance": 0.15,
+    "movementSpeed": 2.5
+  },
+  "targeting": { "priority": "furthest", "aggroRadius": 10 },
+  "ability": "ability_arrow_shot",
+  "projectileSpeed": 300,
+  "animations": {
+    "idle": "archer_idle.gif",
+    "walk": "archer_walk.gif",
+    "attack": "archer_attack.gif",
+    "cast": "archer_cast.gif",
+    "hit": "archer_hit.gif",
+    "death": "archer_death.gif"
+  }
+}

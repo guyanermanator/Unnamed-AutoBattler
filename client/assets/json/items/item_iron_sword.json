@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "id": "item_iron_sword",
+  "name": "Iron Sword",
+  "description": "A sturdy iron sword",
+  "rarity": "common",
+  "type": "weapon",
+  "slot": "weapon",
+  "stats": {
+    "attackDamage": 20
+  },
+  "value": 50,
+  "icon": "icon_iron_sword.png"
+}

@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "id": "item_leather_armor",
+  "name": "Leather Armor",
+  "description": "Basic leather protection",
+  "rarity": "common",
+  "type": "armor",
+  "slot": "chest",
+  "stats": {
+    "armor": 10,
+    "health": 50
+  },
+  "value": 40,
+  "icon": "icon_leather_armor.png"
+}

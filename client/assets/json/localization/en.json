@@ -1,0 +1,25 @@
+{
+  "game_title": "Unnamed Auto Battler",
+  "menu": {
+    "start_run": "Start Run",
+    "collection": "Collection",
+    "settings": "Settings"
+  },
+  "combat": {
+    "victory": "Victory!",
+    "defeat": "Defeat",
+    "continue": "Continue"
+  },
+  "units": {
+    "knight": "Knight",
+    "archer": "Archer",
+    "mage": "Mage"
+  },
+  "stats": {
+    "health": "Health",
+    "mana": "Mana",
+    "attack": "Attack",
+    "armor": "Armor",
+    "speed": "Speed"
+  }
+}

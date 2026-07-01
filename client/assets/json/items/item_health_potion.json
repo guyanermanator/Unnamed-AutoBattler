@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "id": "item_health_potion",
+  "name": "Health Potion",
+  "description": "Restores 100 health",
+  "rarity": "common",
+  "type": "consumable",
+  "value": 25,
+  "maxStack": 5,
+  "consumable": {
+    "effect": "heal",
+    "value": 100
+  },
+  "icon": "icon_health_potion.png"
+}

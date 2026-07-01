@@ -1,4 +1,4 @@
-import { UnitData } from './unit';
+import { UnitData } from './unit.js';
 
 export type StatusEffectType = 
   | 'burn' 

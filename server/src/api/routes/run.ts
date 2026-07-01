@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { Prisma } from '@prisma/client';
 import { SaveRunRequest, LoadRunResponse, ApiResponse } from '@unnamed-auto-battler/shared';
 import prisma from '../../database/prisma';
 import { authenticate, AuthenticatedRequest } from '../middleware/auth';
@@ -22,13 +23,13 @@ export async function runRoutes(fastify: FastifyInstance) {
         const run = await prisma.run.upsert({
           where: { id: runId },
           update: {
-            state: state as Record<string, unknown>,
+            state: state as Prisma.InputJsonValue,
             updatedAt: new Date(),
           },
           create: {
             id: runId,
             userId,
-            state: state as Record<string, unknown>,
+            state: state as Prisma.InputJsonValue,
             active: true,
           },
         });

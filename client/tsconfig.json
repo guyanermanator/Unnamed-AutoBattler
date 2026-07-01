@@ -12,6 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "types": ["vite/client"],
 
     /* Linting */
     "strict": true,
@@ -19,13 +20,7 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    
-    /* Paths */
-    "baseUrl": ".",
-    "paths": {
-      "@unnamed-auto-battler/shared": ["../shared/src"]
-    }
+    "esModuleInterop": true
   },
   "include": ["src"]
 }

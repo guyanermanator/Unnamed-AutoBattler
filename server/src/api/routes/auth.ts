@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { randomInt } from 'crypto';
 import { AuthRequest, AuthResponse, ApiResponse } from '@unnamed-auto-battler/shared';
 import prisma from '../../database/prisma';
 import { strictRateLimit } from '../middleware/rateLimit';
@@ -42,7 +43,7 @@ export async function authRoutes(fastify: FastifyInstance) {
               googleId: mockGoogleId,
               profile: {
                 create: {
-                  username: `Player${Math.floor(Math.random() * 10000)}`,
+                  username: `Player${randomInt(100000)}`,
                 },
               },
             },

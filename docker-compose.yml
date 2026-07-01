@@ -4,9 +4,9 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_USER: autobattler
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: autobattler
+      POSTGRES_USER: ${POSTGRES_USER:-autobattler}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      POSTGRES_DB: ${POSTGRES_DB:-autobattler}
     ports:
       - "5432:5432"
     volumes:
@@ -17,9 +17,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: ******postgres:5432/autobattler
-      JWT_SECRET: your-secret-key-change-in-production
-      PORT: 3000
+      DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      PORT: ${PORT:-3000}
     depends_on:
       - postgres
 

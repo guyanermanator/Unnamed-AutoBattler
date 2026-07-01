@@ -13,6 +13,14 @@ export interface Trait {
   };
 }
 
+/** Minimal mutable stats interface used for trait application */
+export interface MutableStats {
+  maxHealth: number;
+  attackDamage: number;
+  armor: number;
+  attackSpeed: number;
+}
+
 export class TraitSystem {
   private traits: Map<string, Trait> = new Map();
 
@@ -33,7 +41,7 @@ export class TraitSystem {
   /**
    * Apply trait bonuses to stats
    */
-  applyTraits(stats: any, traitIds: string[]): void {
+  applyTraits(stats: MutableStats, traitIds: string[]): void {
     traitIds.forEach(traitId => {
       const trait = this.traits.get(traitId);
       if (trait) {

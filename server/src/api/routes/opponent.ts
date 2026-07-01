@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { randomInt } from 'crypto';
 import { OpponentData, ApiResponse } from '@unnamed-auto-battler/shared';
 import prisma from '../../database/prisma';
 import { authenticate } from '../middleware/auth';
@@ -25,7 +26,7 @@ export async function opponentRoutes(fastify: FastifyInstance) {
         } as ApiResponse);
       }
 
-      const randomProfile = profiles[Math.floor(Math.random() * profiles.length)];
+      const randomProfile = profiles[randomInt(profiles.length)];
 
       const response: ApiResponse<OpponentData> = {
         success: true,

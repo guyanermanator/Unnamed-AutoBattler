@@ -22,13 +22,13 @@ export async function runRoutes(fastify: FastifyInstance) {
         const run = await prisma.run.upsert({
           where: { id: runId },
           update: {
-            state: state as any,
+            state: state as Record<string, unknown>,
             updatedAt: new Date(),
           },
           create: {
             id: runId,
             userId,
-            state: state as any,
+            state: state as Record<string, unknown>,
             active: true,
           },
         });
@@ -78,7 +78,7 @@ export async function runRoutes(fastify: FastifyInstance) {
           success: true,
           data: {
             runId: run.id,
-            state: run.state as any,
+            state: run.state as SaveRunRequest['state'],
             savedAt: run.updatedAt.toISOString(),
           },
         };

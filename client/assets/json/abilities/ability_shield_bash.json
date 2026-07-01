@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "id": "ability_shield_bash",
+  "name": "Shield Bash",
+  "description": "Bash an enemy with your shield, dealing damage and stunning them",
+  "type": "active",
+  "targetType": "enemy",
+  "manaCost": 40,
+  "cooldown": 8,
+  "castTime": 0.3,
+  "range": 2,
+  "damage": {
+    "base": 80,
+    "scaling": 0.5,
+    "type": "physical"
+  },
+  "statusEffect": {
+    "id": "stun",
+    "duration": 1.5
+  },
+  "icon": "icon_shield_bash.png"
+}

@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "id": "ability_fireball",
+  "name": "Fireball",
+  "description": "Launch a fireball that deals magic damage",
+  "type": "active",
+  "targetType": "enemy",
+  "manaCost": 60,
+  "cooldown": 10,
+  "castTime": 0.8,
+  "range": 7,
+  "radius": 2,
+  "damage": {
+    "base": 150,
+    "scaling": 0.8,
+    "type": "magical"
+  },
+  "statusEffect": {
+    "id": "burn",
+    "duration": 3,
+    "stacks": 1
+  },
+  "projectile": {
+    "speed": 250,
+    "sprite": "fireball.png"
+  },
+  "icon": "icon_fireball.png"
+}

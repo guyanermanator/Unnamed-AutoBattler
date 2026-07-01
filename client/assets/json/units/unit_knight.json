@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "id": "unit_knight",
+  "name": "Knight",
+  "rarity": "common",
+  "cost": 1,
+  "class": "Tank",
+  "faction": "Human",
+  "traits": ["warrior"],
+  "stats": {
+    "health": 800,
+    "maxHealth": 800,
+    "mana": 0,
+    "maxMana": 100,
+    "manaRegen": 0,
+    "attackDamage": 60,
+    "magicDamage": 0,
+    "armor": 40,
+    "magicResist": 20,
+    "attackSpeed": 0.8,
+    "attackRange": 1,
+    "critChance": 0.05,
+    "movementSpeed": 2
+  },
+  "targeting": { "priority": "closest", "aggroRadius": 8 },
+  "ability": "ability_shield_bash",
+  "animations": {
+    "idle": "knight_idle.gif",
+    "walk": "knight_walk.gif",
+    "attack": "knight_attack.gif",
+    "cast": "knight_cast.gif",
+    "hit": "knight_hit.gif",
+    "death": "knight_death.gif"
+  }
+}

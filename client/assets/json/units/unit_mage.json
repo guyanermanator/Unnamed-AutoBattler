@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "id": "unit_mage",
+  "name": "Mage",
+  "rarity": "uncommon",
+  "cost": 2,
+  "class": "Mage",
+  "faction": "Human",
+  "traits": ["arcane"],
+  "stats": {
+    "health": 400,
+    "maxHealth": 400,
+    "mana": 0,
+    "maxMana": 150,
+    "manaRegen": 2,
+    "attackDamage": 30,
+    "magicDamage": 80,
+    "armor": 10,
+    "magicResist": 30,
+    "attackSpeed": 0.6,
+    "attackRange": 5,
+    "critChance": 0.1,
+    "movementSpeed": 2
+  },
+  "targeting": { "priority": "lowest_hp", "aggroRadius": 8 },
+  "ability": "ability_fireball",
+  "projectileSpeed": 250,
+  "animations": {
+    "idle": "mage_idle.gif",
+    "walk": "mage_walk.gif",
+    "attack": "mage_attack.gif",
+    "cast": "mage_cast.gif",
+    "hit": "mage_hit.gif",
+    "death": "mage_death.gif"
+  }
+}

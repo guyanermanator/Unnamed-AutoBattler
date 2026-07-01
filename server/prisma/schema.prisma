@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  googleId  String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile   Profile?
+  runs      Run[]
+  teams     SavedTeam[]
+  messages  ChatMessage[]
+  leaderboard LeaderboardEntry?
+
+  @@index([googleId])
+  @@index([email])
+}
+
+model Profile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username      String   @unique
+  avatar        String?
+  level         Int      @default(1)
+  experience    Int      @default(0)
+  gold          Int      @default(0)
+  highestFloor  Int      @default(0)
+  totalWins     Int      @default(0)
+  totalLosses   Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([username])
+  @@index([highestFloor])
+}
+
+model Run {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  state     Json
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, active])
+}
+
+model SavedTeam {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  units     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model LeaderboardEntry {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  highestFloor Int      @default(0)
+  totalWins    Int      @default(0)
+  rating       Int      @default(1000)
+  updatedAt    DateTime @updatedAt
+
+  @@index([rating])
+  @@index([highestFloor])
+}

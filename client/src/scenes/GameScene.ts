@@ -9,10 +9,12 @@ import { Button } from '../engine/ui/widgets/Button';
  */
 export class GameScene extends Scene {
   private uiManager: UIManager;
+  private onStartRun?: () => void | Promise<void>;
 
-  constructor() {
+  constructor(onStartRun?: () => void | Promise<void>) {
     super('GameScene');
     this.uiManager = new UIManager();
+    this.onStartRun = onStartRun;
   }
 
   onEnter(): void {
@@ -24,7 +26,7 @@ export class GameScene extends Scene {
       height: 30,
       text: 'Start Run',
       onClick: () => {
-        console.log('Start Run clicked');
+        void this.onStartRun?.();
       },
     }));
 

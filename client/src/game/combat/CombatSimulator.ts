@@ -71,6 +71,9 @@ export class CombatSimulator {
       // Find target
       if (!unit.target || !unit.target.stats.isAlive()) {
         unit.target = this.findTarget(unit);
+        if (unit.target) {
+          eventBus.emit('UnitTargeted', { sourceId: unit.id, targetId: unit.target.id });
+        }
       }
 
       // Combat logic
@@ -141,14 +144,38 @@ export class CombatSimulator {
       isCrit,
       attacker.stats.critDamage
     );
+    const isRanged = attacker.stats.attackRange > 1.5;
+
+    eventBus.emit('UnitAttacked', {
+      sourceId: attacker.id,
+      targetId: target.id,
+      isCrit,
+      damage,
+      isRanged,
+    });
 
     // Create projectile if ranged
-    if (attacker.stats.attackRange > 1.5) {
+    if (isRanged) {
       const projectile = new Projectile(attacker, target, damage, attacker.data.projectileSpeed || 200);
+      eventBus.emit('ProjectileSpawned', {
+        id: projectile.id,
+        from: attacker.id,
+        to: target.id,
+      });
       projectile.onHit = (t) => {
         const actualDamage = t.stats.takeDamage(damage);
         attacker.stats.gainMana(DamageFormulas.calculateManaGain(actualDamage));
         t.stats.gainMana(DamageFormulas.calculateManaGainFromDamage(actualDamage));
+        eventBus.emit('ProjectileHit', {
+          id: projectile.id,
+          target: t.id,
+          damage: actualDamage,
+        });
+        eventBus.emit('UnitDamaged', {
+          unitId: t.id,
+          damage: actualDamage,
+          source: attacker.id,
+        });
 
         if (!t.stats.isAlive()) {
           eventBus.emit('UnitDied', { unitId: t.id, killedBy: attacker.id });
@@ -160,6 +187,11 @@ export class CombatSimulator {
       const actualDamage = target.stats.takeDamage(damage);
       attacker.stats.gainMana(DamageFormulas.calculateManaGain(actualDamage));
       target.stats.gainMana(DamageFormulas.calculateManaGainFromDamage(actualDamage));
+      eventBus.emit('UnitDamaged', {
+        unitId: target.id,
+        damage: actualDamage,
+        source: attacker.id,
+      });
 
       if (!target.stats.isAlive()) {
         eventBus.emit('UnitDied', { unitId: target.id, killedBy: attacker.id });

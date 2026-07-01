@@ -158,4 +158,46 @@ export class Renderer {
       this.ctx.stroke();
     }
   }
+
+  /**
+   * Draw an image
+   */
+  drawImage(
+    image: CanvasImageSource,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    options?: {
+      alpha?: number;
+    }
+  ): void {
+    this.ctx.save();
+    this.ctx.globalAlpha = options?.alpha ?? 1;
+    this.ctx.drawImage(image, x, y, width, height);
+    this.ctx.restore();
+  }
+
+  /**
+   * Draw a centered image
+   */
+  drawImageCentered(
+    image: CanvasImageSource,
+    centerX: number,
+    centerY: number,
+    width: number,
+    height: number,
+    options?: {
+      alpha?: number;
+    }
+  ): void {
+    this.drawImage(
+      image,
+      centerX - width / 2,
+      centerY - height / 2,
+      width,
+      height,
+      options
+    );
+  }
 }

@@ -17,11 +17,15 @@ export class InputManager {
   private mouse: MouseState;
   private keyboard: KeyboardState;
   private canvas: HTMLCanvasElement;
+  private virtualWidth: number;
+  private virtualHeight: number;
   private prevMouse: MouseState;
   private prevKeyboard: KeyboardState;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, virtualWidth?: number, virtualHeight?: number) {
     this.canvas = canvas;
+    this.virtualWidth = virtualWidth ?? canvas.width;
+    this.virtualHeight = virtualHeight ?? canvas.height;
     this.mouse = {
       position: new Vector2(),
       buttons: new Set(),
@@ -47,8 +51,8 @@ export class InputManager {
     this.canvas.addEventListener('mousemove', (e) => {
       const rect = this.canvas.getBoundingClientRect();
       this.mouse.position.set(
-        e.clientX - rect.left,
-        e.clientY - rect.top
+        ((e.clientX - rect.left) / rect.width) * this.virtualWidth,
+        ((e.clientY - rect.top) / rect.height) * this.virtualHeight
       );
     });
 

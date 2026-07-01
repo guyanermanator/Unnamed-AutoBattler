@@ -9,6 +9,9 @@ import { RNG } from './engine/rng/RNG';
 import { GameScene } from './scenes/GameScene';
 import { CombatScene } from './scenes/CombatScene';
 import { DungeonScene } from './scenes/DungeonScene';
+import { UnitLoader } from './game/units/UnitLoader';
+import { Unit } from './game/units/Unit';
+import { Vector2 } from './engine/math/Vector2';
 
 const VIRTUAL_WIDTH = 480;
 const VIRTUAL_HEIGHT = 270;
@@ -25,6 +28,10 @@ export class Game {
   private audioManager: AudioManager;
   private debugOverlay: DebugOverlay;
   private rng: RNG;
+  private unitLoader: UnitLoader;
+  private gameScene: GameScene;
+  private combatScene: CombatScene;
+  private dungeonScene: DungeonScene;
 
   constructor(canvas: HTMLCanvasElement) {
     // Initialize systems
@@ -35,17 +42,21 @@ export class Game {
       pixelPerfect: true,
     });
 
-    this.inputManager = new InputManager(canvas);
+    this.inputManager = new InputManager(canvas, VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
     this.assetManager = new AssetManager();
     this.audioManager = new AudioManager();
     this.debugOverlay = new DebugOverlay();
     this.rng = new RNG(Date.now());
+    this.unitLoader = new UnitLoader(this.assetManager);
 
     // Initialize scene manager
     this.sceneManager = new SceneManager();
-    this.sceneManager.registerScene(new GameScene());
-    this.sceneManager.registerScene(new CombatScene());
-    this.sceneManager.registerScene(new DungeonScene());
+    this.gameScene = new GameScene(() => this.startDemoCombat());
+    this.combatScene = new CombatScene(() => this.sceneManager.switchTo('GameScene'));
+    this.dungeonScene = new DungeonScene();
+    this.sceneManager.registerScene(this.gameScene);
+    this.sceneManager.registerScene(this.combatScene);
+    this.sceneManager.registerScene(this.dungeonScene);
 
     // Initialize game loop
     this.gameLoop = new GameLoop(
@@ -140,5 +151,22 @@ export class Game {
    */
   getRNG(): RNG {
     return this.rng;
+  }
+
+  private async startDemoCombat(): Promise<void> {
+    const allyIds = ['unit_knight', 'unit_archer', 'unit_mage', 'unit_knight'];
+    const enemyIds = ['unit_knight', 'unit_archer', 'unit_mage', 'unit_archer', 'unit_knight'];
+    const [allies, enemies] = await Promise.all([
+      this.createUnits(allyIds, 'ally'),
+      this.createUnits(enemyIds, 'enemy'),
+    ]);
+
+    this.combatScene.startCombat(allies, enemies, this.rng.getSeed());
+    this.sceneManager.switchTo('CombatScene');
+  }
+
+  private async createUnits(unitIds: string[], team: 'ally' | 'enemy'): Promise<Unit[]> {
+    const data = await this.unitLoader.loadMultiple(unitIds);
+    return data.map(unitData => new Unit(unitData, team, Vector2.zero));
   }
 }

@@ -111,6 +111,7 @@ export class CombatPresentation {
   private overlayFlash = 0;
   private battleOutcome: boolean | null = null;
   private logCollapsed = true;
+  private nextId = 0;
 
   bind(allies: Unit[], enemies: Unit[]): void {
     this.destroy();
@@ -326,7 +327,7 @@ export class CombatPresentation {
 
   private pushFloatingText(unitId: string, text: string, color: string, emphasis?: string): void {
     this.floatingTexts.push({
-      id: `${unitId}_${Date.now()}_${Math.random()}`,
+      id: `${unitId}_${this.nextId++}`,
       targetId: unitId,
       text,
       color,
@@ -340,7 +341,7 @@ export class CombatPresentation {
 
   private appendLog(text: string, emphasis?: CombatLogEntry['emphasis']): void {
     this.combatLog.unshift({
-      id: `${Date.now()}_${Math.random()}`,
+      id: `log_${this.nextId++}`,
       text,
       emphasis,
     });

@@ -263,7 +263,9 @@ export class CombatScene extends Scene {
 
     const gap = 6;
     const contentX = rect.x + 8;
-    const cardWidth = (rect.width - 16 - gap * (partyStates.length - 1)) / Math.max(1, partyStates.length);
+    const partyCount = Math.max(1, partyStates.length);
+    const totalGap = gap * Math.max(0, partyStates.length - 1);
+    const cardWidth = (rect.width - 16 - totalGap) / partyCount;
     const cardHeight = rect.height - 28;
 
     partyStates.forEach((state, index) => {
@@ -336,7 +338,7 @@ export class CombatScene extends Scene {
       });
     });
 
-    const readiness = state.unit.attackCooldown <= 0 ? 'READY' : `${Math.max(0, state.unit.attackCooldown).toFixed(1)}s`;
+    const readiness = state.unit.attackCooldown <= 0 ? 'READY' : `${state.unit.attackCooldown.toFixed(1)}s`;
     renderer.drawText(readiness, rect.x + rect.width - 6, rect.y + rect.height - 13, {
       color: state.unit.attackCooldown <= 0 ? '#006400' : '#7a0000',
       font: '7px "Courier New"',

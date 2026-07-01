@@ -10,6 +10,8 @@ export interface GameEvents {
   UnitSpawned: { unitId: string; position: { x: number; y: number } };
   UnitDamaged: { unitId: string; damage: number; source?: string };
   UnitHealed: { unitId: string; amount: number; source?: string };
+  UnitTargeted: { sourceId: string; targetId: string };
+  UnitAttacked: { sourceId: string; targetId: string; isCrit: boolean; damage: number; isRanged: boolean };
   
   // Combat events
   BattleStarted: { seed: number };

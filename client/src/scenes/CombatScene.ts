@@ -373,7 +373,7 @@ export class CombatScene extends Scene {
       return;
     }
 
-    this.presentation.getCombatLog().slice(0, MAX_VISIBLE_LOG_ENTRIES).forEach((entry, index) => {
+    this.presentation.getVisibleCombatLogEntries(MAX_VISIBLE_LOG_ENTRIES).forEach((entry, index) => {
       const color =
         entry.emphasis === 'crit' ? '#8b0000' :
         entry.emphasis === 'system' ? '#000080' :
@@ -426,7 +426,7 @@ export class CombatScene extends Scene {
   }
 
   private renderStatusBar(renderer: Renderer): void {
-    renderer.drawText('AUTO BATTLE ONLINE  •  WINDOWS-98 BATTLE MODULE  •  ESC TO RETURN AFTER COMBAT', 240, 263, {
+    renderer.drawText('AUTO BATTLE ONLINE • WINDOWS-98 BATTLE MODULE • ESC TO RETURN AFTER COMBAT', 240, 263, {
       color: '#d5d5d5',
       font: '8px "Courier New"',
       align: 'center',
@@ -527,7 +527,7 @@ export class CombatScene extends Scene {
     canvas.height = 40;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      throw new Error('Failed to create portrait placeholder canvas. Canvas 2D rendering may be unavailable in this browser environment.');
+      throw new Error('Failed to get 2D context for portrait canvas');
     }
 
     ctx.fillStyle = this.getRarityColor(unit.data.rarity);
@@ -559,7 +559,7 @@ export class CombatScene extends Scene {
     canvas.height = 72;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      throw new Error('Failed to create enemy placeholder canvas. Canvas 2D rendering may be unavailable in this browser environment.');
+      throw new Error('Failed to get 2D context for enemy canvas');
     }
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 72);

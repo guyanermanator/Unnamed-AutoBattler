@@ -147,7 +147,10 @@ export class CombatPresentation {
       this.highlights.set(sourceId, 0.35);
       this.targetPulses.set(targetId, 0.45);
       const attackVerb = isRanged ? 'fires at' : 'strikes';
-      this.appendLog(`${this.getUnitName(sourceId)} ${attackVerb} ${this.getUnitName(targetId)}${isCrit ? '!' : '.'}`, isCrit ? 'crit' : undefined);
+      this.appendLog(
+        `${this.getUnitName(sourceId)} ${attackVerb} ${this.getUnitName(targetId)}${isCrit ? '!' : '.'}`,
+        isCrit ? 'crit' : undefined
+      );
     });
 
     this.subscribe('ProjectileSpawned', ({ from, to }) => {
@@ -281,6 +284,10 @@ export class CombatPresentation {
 
   getCombatLog(): CombatLogEntry[] {
     return this.combatLog;
+  }
+
+  getVisibleCombatLogEntries(limit: number): CombatLogEntry[] {
+    return this.combatLog.slice(0, limit);
   }
 
   isLogCollapsed(): boolean {
